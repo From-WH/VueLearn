@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .red{
+      background-color: red;
+      height: 100px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  {{date | formDate}}
+  <br>
+  <button @click="stopTime()">点我暂停</button>
+  <br>
+  <button @click="add">点击加一{{ccc}}</button>
+  <button @click="add">点击加一{{ccc}}</button>
+  <br>
+  <span v-text="text"></span>
+  <br>
+  <span :class="className">aaa</span>
+  <br>
+  <span v-html="html"></span>
+  <aaa></aaa>
+  <aaa></aaa>
+  <aaa></aaa>
+</div>
+
+<script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+<script>
+  var plusDate = function (value) {
+    return value < 10 ? '0' + value : value
+  }
+  var app = new Vue({
+      el: '#app',
+      data(){
+        return{
+          date: new Date(),
+          a: false,
+          ccc:0,
+          className:'red',
+          text:'你好西安',
+          html:'<h2 style="color:yellow">我是黄色</h2>'
+        }
+      },
+      mounted() {
+        this.newTime = setInterval(() => {
+          this.date = new Date()
+        }, 0);
+      },
+      filters: {
+        formDate(value) {
+          var date = new Date(value)
+          var year = date.getFullYear()
+          var month = date.getMonth() + 1
+          var day = date.getDate()
+          var hours = date.getHours()
+          var min = date.getMinutes()
+          var second = date.getSeconds()
+          return year + '年' + month + '月' + day + '日' + hours + '时' + min + '分' + second + '秒'
+        }
+      },
+      methods: {
+        stopTime() {
+          if (this.a === false) {
+            clearInterval(this.newTime)
+            this.a = true
+            console.log(1);
+          } else {
+            this.newTime = setInterval(() => {
+              this.date = new Date()
+            }, 0);
+            this.a = false
+            console.log(2);
+          }
+        },
+        add(){
+          this.ccc+=1
+        }
+      }
+    }
+  )
+</script>
+<script>
+  Vue.component('aaa',{
+    template:`
+    <button @click="add">{{vvv}}</button>
+    `,
+    data(){
+      return{
+        vvv:0
+      }
+
+    },
+    methods:{
+      add(){
+        this.vvv+=1
+      }
+    }
+  })
+</script>
+</body>
+</html>
